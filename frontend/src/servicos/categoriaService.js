@@ -1,4 +1,4 @@
-const urlBase = "http://localhost:4000/categoria";
+const urlBase = "http://localhost:3000/categoria";
 
 export async function gravar(categoria, token) {
     const resposta = await fetch(urlBase,
