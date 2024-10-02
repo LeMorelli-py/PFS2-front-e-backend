@@ -7,12 +7,12 @@ export default function Pagina(props) {
     return (
         <>
             <Container>
-                <Cabecalho titulo="Sistema de controle Gerencial" />
+                <Cabecalho titulo="Switch GAMES" />
                 <Menu />
                 {
                     props.children
                 }
-                <Rodape informacoes="Rua X, 123, Centro, Presidente Prudente/SP.   -   (18) 99999-9999   -    renatogoncalves@unoeste.edu.br" />
+               
             </Container>
         </>
 

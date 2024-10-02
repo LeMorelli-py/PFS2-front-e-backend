@@ -6,75 +6,70 @@ import Row from 'react-bootstrap/Row';
 import CaixaSelecao from '../../busca/CaixaSelecao';
 import { useState, useContext } from 'react';
 import { ContextoUsuarioLogado } from '../../../App';
-import { alterar, gravar } from '../../../servicos/produtoService';
+import { alterar, gravar } from '../../../servicos/consoleService';
 
-export default function FormCadProdutos(props) {
-
+export default function FormCadconsole(props) {
     const contextoUsuario = useContext(ContextoUsuarioLogado);
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState(props.produtoSelecionado.categoria);
-    const [produto, setProduto] = useState(props.produtoSelecionado);
+    const [marcaSelecionada, setMarcaSelecionada] = useState(props.consoleSelecionado.marca);
+    const [console, setConsole] = useState(props.consoleSelecionado);
     const [validado, setValidado] = useState(false);
 
-    function manipularMudanca(evento){
-        setProduto({
-            ...produto,
+    function manipularMudanca(evento) {
+        setConsole({
+            ...console,
             [evento.target.name]: evento.target.value
         });
     }
 
-    function manipularSubmissao(evento){
-        const token = contextoUsuario.usuarioLogado.token;
+    async function manipularSubmissao(evento) {
+        evento.preventDefault();
         const formulario = evento.currentTarget;
-        if(formulario.checkValidity()){
-            const dados = { ...produto, categoria: categoriaSelecionada };
-            if(!props.modoEdicao){
-                gravar(dados, token).then((resposta) => {
+        setValidado(!formulario.checkValidity());
+
+        if (formulario.checkValidity()) {
+            const token = contextoUsuario.usuarioLogado.token;
+            const dados = { ...console, marca: marcaSelecionada };
+
+            try {
+                if (!props.modoEdicao) {
+                    const resposta = await gravar(dados, token);
                     alert(resposta.mensagem);
                     if (resposta.status) {
-                        props.setExibirTabela(true);    
+                        props.setExibirTabela(true);
                     }
-                }).catch((erro) => {
-                    alert("Erro ao enviar a requisição: " + erro.message);
-                });
-                
-            }
-            else{
-                alterar(dados, token).then((resposta) => {
+                } else {
+                    const resposta = await alterar(dados, token);
                     alert(resposta.mensagem);
                     props.setModoEdicao(false);
-                    setProduto({
-                        codigo: 0,
-                        descricao: "",
-                        precoCusto: 0,
-                        precoVenda: 0,
-                        categoria: {
-                            codigo: 0,
-                            descricao: ""
+                    setConsole({
+                        cons_codigo: 0,
+                        cons_descricao: "",
+                        cons_precoCusto: 0,
+                        cons_precoVenda: 0,
+                        marca: {
+                            mar_codigo: 0,
+                            mar_descricao: ""
                         },
-                        qtdEstoque: 0,
-                        dataValidade: ""
-                    })
-                    props.setProdutoSelecionado({ codigo: 0,
-                        descricao: "",
-                        precoCusto: 0,
-                        precoVenda: 0,
-                        categoria: {
-                            codigo: 0,
-                            descricao: ""
+                        cons_qtdEstoque: 0,
+                    });
+                    props.setConsoleSelecionado({
+                        cons_codigo: 0,
+                        cons_descricao: "",
+                        cons_precoCusto: 0,
+                        cons_precoVenda: 0,
+                        marca: {
+                            mar_codigo: 0,
+                            mar_descricao: ""
                         },
-                        qtdEstoque: 0,
-                        dataValidade: ""});
-                }).catch((erro) => {
-                    alert("Erro ao enviar a requisição: " + erro.message);
-                });
+                        cons_qtdEstoque: 0,
+                    });
+                }
+            } catch (erro) {
+                alert("Erro ao enviar a requisição: " + erro.message);
             }
-            setValidado(false);
         }
-        else{
-            setValidado(true);
-        }
+
         evento.stopPropagation();
-        evento.preventDefault();    
     }
 
     return (
@@ -85,13 +80,13 @@ export default function FormCadProdutos(props) {
                     <Form.Control
                         required
                         type="text"
-                        id="codigo"
+                        id="cons_codigo"
                         name="codigo"
-                        value={produto.codigo}
+                        value={console.cons_codigo}
                         onChange={manipularMudanca}
                         disabled
                     />
-                    <Form.Control.Feedback type='invalid'>Por favor, informe o código do produto!</Form.Control.Feedback>
+                    <Form.Control.Feedback type='invalid'>Por favor, informe o código do console!</Form.Control.Feedback>
                 </Form.Group>
             </Row>
             <Row className="mb-4">
@@ -100,26 +95,26 @@ export default function FormCadProdutos(props) {
                     <Form.Control
                         required
                         type="text"
-                        id="descricao"
+                        id="cons_descricao"
                         name="descricao"
-                        value={produto.descricao}
+                        value={console.cons_descricao}
                         onChange={manipularMudanca}
                     />
-                    <Form.Control.Feedback type="invalid">Por favor, informe a descrição do produto!</Form.Control.Feedback>
+                    <Form.Control.Feedback type="invalid">Por favor, informe a descrição do console!</Form.Control.Feedback>
                 </Form.Group>
             </Row>
             <Row className="mb-4">
                 <Form.Group as={Col} md="4">
                     <Form.Label>Preço de Custo:</Form.Label>
                     <InputGroup hasValidation>
-                        <InputGroup.Text id="precoCusto">R$</InputGroup.Text>
+                        <InputGroup.Text id="cons_precoCusto">R$</InputGroup.Text>
                         <Form.Control
                             type="text"
-                            id="precoCusto"
+                            id="cons_precoCusto"
                             name="precoCusto"
                             aria-describedby="precoCusto"
                             onChange={manipularMudanca}
-                            value={produto.precoCusto}
+                            value={console.cons_precoCusto}
                             required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -130,14 +125,14 @@ export default function FormCadProdutos(props) {
                 <Form.Group as={Col} md="4">
                     <Form.Label>Preço de Venda:</Form.Label>
                     <InputGroup hasValidation>
-                        <InputGroup.Text id="precoVenda">R$</InputGroup.Text>
+                        <InputGroup.Text id="cons_precoVenda">R$</InputGroup.Text>
                         <Form.Control
                             type="text"
-                            id="precoVenda"
+                            id="cons_precoVenda"
                             name="precoVenda"
                             aria-describedby="precoVenda"
                             onChange={manipularMudanca}
-                            value={produto.precoVenda}
+                            value={console.cons_precoVenda}
                             required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -145,17 +140,17 @@ export default function FormCadProdutos(props) {
                         </Form.Control.Feedback>
                     </InputGroup>
                 </Form.Group>
-                <Form.Group as={Col} md="4" >
+                <Form.Group as={Col} md="4">
                     <Form.Label>Qtd em estoque:</Form.Label>
                     <InputGroup hasValidation>
-                        <InputGroup.Text id="qtdEstoque">+</InputGroup.Text>
+                        <InputGroup.Text id="cons_qtdEstoque">+</InputGroup.Text>
                         <Form.Control
                             type="text"
-                            id="qtdEstoque"
+                            id="cons_qtdEstoque"
                             name="qtdEstoque"
                             aria-describedby="qtdEstoque"
                             onChange={manipularMudanca}
-                            value={produto.qtdEstoque}
+                            value={console.cons_qtdEstoque}
                             required
                         />
                         <Form.Control.Feedback type="invalid">
@@ -165,39 +160,28 @@ export default function FormCadProdutos(props) {
                 </Form.Group>
             </Row>
             <Row className="mb-4">
-                <Form.Group as={Col} md="4" controlId="dataValidade">
-                    <Form.Label>Válido até:</Form.Label>
-                    <Form.Control
-                        required
-                        type="text"
-                        id="dataValidade"
-                        name="dataValidade"
-                        value={produto.dataValidade}
-                        onChange={manipularMudanca}
-                    />
-                    <Form.Control.Feedback type="invalid">Por favor, informe a data de validade do produto!</Form.Control.Feedback>
-                </Form.Group>
                 <Col md={8}>
                     <Form.Label>Categoria:</Form.Label>
-                    <CaixaSelecao enderecoFonteDados={"http://localhost:4000/categoria"} 
-                                  campoChave={"codigo"}
-                                  campoExibicao={"descricao"}
-                                  funcaoSelecao={setCategoriaSelecionada}
-                                  localLista={"listaCategorias"}
-                                  tokenAcesso={contextoUsuario.usuarioLogado.token}/>
+                    <CaixaSelecao
+                        enderecoFonteDados={"http://localhost:4000/marca"}
+                        campoChave={"cons_codigo"}
+                        campoExibicao={"cons_descricao"}
+                        funcaoSelecao={setMarcaSelecionada}
+                        localLista={"listaCMarcas"}
+                        tokenAcesso={contextoUsuario.usuarioLogado.token}
+                    />
                 </Col>
             </Row>
             <Row className='mt-2 mb-2'>
                 <Col md={1}>
                     <Button type="submit">{props.modoEdicao ? 'Alterar' : 'Cadastrar'}</Button>
                 </Col>
-                <Col md={{offset:1}}>
-                    <Button onClick={()=>{
+                <Col md={{ offset: 1 }}>
+                    <Button onClick={() => {
                         props.setExibirTabela(true);
                     }}>Voltar</Button>
                 </Col>
             </Row>
         </Form>
-
     );
 }

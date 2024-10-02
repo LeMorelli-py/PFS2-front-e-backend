@@ -1,46 +1,46 @@
 import { Alert } from "react-bootstrap";
-import FormCadCategorias from "./Formularios/FormCadCategoria";
+import FormCadMarcas from "./Formularios/FormCadMarca";
 import Pagina from "../Templates/Pagina";
 import { useEffect, useState, useContext } from "react";
-import TabelaCategorias from "./Tabelas/TabelaCategorias";
-import { consultarTodos } from "../../servicos/categoriaService";
+import TabelaMarcas from "./Tabelas/TabelaMarcas";
+import { consultarTodos } from "../../servicos/marcaService";
 import { ContextoUsuarioLogado } from "../../App";
-export default function TelaCadastroCategoria(props) {
+export default function TelaCadastroMarca(props) {
     const contextoUsuario = useContext(ContextoUsuarioLogado);
     const [exibirTabela, setExibirTabela] = useState(true);
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState({ codigo: 0, descricao: "" });
+    const [marcaSelecionada, setMarcaSelecionada] = useState({ mar_codigo: 0, mar_descricao: "" });
     const [modoEdicao, setModoEdicao] = useState(false);
-    const [listaDeCategorias, setListaDeCategorias] = useState([]);
+    const [listaDeMarcas, setListaDeMarcas] = useState([]);
     
     useEffect(() => {
         consultarTodos(contextoUsuario.usuarioLogado.token).then((resposta) => {
             if (resposta.status){
-                setListaDeCategorias(resposta.listaCategorias);
+                setListaDeMarcas(resposta.listaMarcas);
             }
             else{
                 alert(resposta.mensagem);
             }
         })
-    }, [listaDeCategorias]);
+    }, [listaDeMarcas]);
 
     return (
         <div>
             <Pagina>
                 |<Alert className="mt-02 mb-02 success text-center" variant="success">
                     <h2>
-                        Cadastro de Categorias
+                        Cadastro de Marcas
                     </h2>
                 </Alert>
                 {
                     exibirTabela ?
-                        <TabelaCategorias listaDeCategorias={listaDeCategorias} 
+                        <TabelaMarcas listaDeMarcas={listaDeMarcas} 
                                           setExibirTabela={setExibirTabela} 
-                                          categoriaSelecionada={categoriaSelecionada}
-                                          setCategoriaSelecionada={setCategoriaSelecionada}
+                                          marcaSelecionada={marcaSelecionada}
+                                          setMarcaSelecionada={setMarcaSelecionada}
                                           setModoEdicao={setModoEdicao}/> :
-                        <FormCadCategorias setExibirTabela={setExibirTabela}
-                                           categoriaSelecionada={categoriaSelecionada}
-                                           setCategoriaSelecionada={setCategoriaSelecionada}
+                        <FormCadMarcas    setExibirTabela={setExibirTabela}
+                                           marcaSelecionada={marcaSelecionada}
+                                           setMarcaSelecionada={setMarcaSelecionada}
                                            setModoEdicao={setModoEdicao} 
                                            modoEdicao={modoEdicao}/>
                 }

@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Col, Form, Row, Spinner } from "react-bootstrap";
 
-//Depende de componentes estilizados pelo bootstrap
-//endereFonteDados: informa qual a url que a caixa de seleção utilizará para recuperar os dados
-//campoChave: Nos dados, qual campo é a chave primária
-//campoExibicao: Qual coluna deve ser exibida pela caixa de seleção
-//funcaoSelecao : Que é a função que receberá o objeto selecionado pelo usuário
-
-
 export default function CaixaSelecao({ enderecoFonteDados,
     campoChave,
     campoExibicao, 
@@ -83,8 +76,6 @@ export default function CaixaSelecao({ enderecoFonteDados,
                     <Form.Select
                                  onChange={(evento) => {
                                     const itemSelecionado = evento.currentTarget.value;
-                                    //ValorSelecionado e funcaoSelecao esperam objetos da lista
-                                                //gerando uma lista somente de ids, cpfs, codigo
                                     const pos = dados.map((item) => item[campoChave].toString()).indexOf(itemSelecionado);
                                     setValorSelecionado(dados[pos]);
                                     funcaoSelecao(dados[pos]);

@@ -1,16 +1,16 @@
 import { useState, useContext } from 'react';
 import { Container, Form, Row, Col, Button, FloatingLabel } from 'react-bootstrap';
 import { ContextoUsuarioLogado } from '../../../App';
-import { gravar, alterar } from '../../../servicos/categoriaService';
+import { gravar, alterar } from '../../../servicos/marcaService';
 
-export default function FormCadCategorias(props) {
-    const [categoria, setCategoria] = useState(props.categoriaSelecionada);
+export default function FormCadMarcas(props) {
+    const [marca, setMarca] = useState(props.marcaSelecionada);
     const [validado, setValidado] = useState(false);
     const contextoUsuario = useContext(ContextoUsuarioLogado);
 
     function manipularMudanca(evento) {
-        setCategoria({
-            ...categoria,
+        setMarca({
+            ...marca,
             [evento.target.name]: evento.target.value
         });
     }
@@ -20,7 +20,7 @@ export default function FormCadCategorias(props) {
         const formulario = evento.currentTarget;
         if (formulario.checkValidity()) {
             if (!props.modoEdicao) {
-                gravar(categoria,token).then((resposta) => {
+                gravar(marca,token).then((resposta) => {
                     alert(resposta.mensagem);
                     props.setExibirTabela(true);
                 }).catch((erro) => {
@@ -28,10 +28,10 @@ export default function FormCadCategorias(props) {
                 });
             }
             else {
-                alterar(categoria, token).then((resposta) => {
+                alterar(marca, token).then((resposta) => {
                     alert("Atualizado com sucesso!");
                     props.setModoEdicao(false);
-                    props.setCategoriaSelecionada( { codigo: 0, descricao: "" });
+                    props.setMarcaSelecionada( { mar_codigo: 0, mar_descricao: "" });
 
                     setValidado(false);
                 }).catch((erro) => {
@@ -62,13 +62,13 @@ export default function FormCadCategorias(props) {
                                 <Form.Control
                                     type="text"
                                     placeholder="0"
-                                    id="codigo"
+                                    id="mar_codigo"
                                     name="codigo"
                                     onChange={manipularMudanca}
-                                    value={categoria.codigo}
+                                    value={marca.mar_codigo}
                                     disabled />
                             </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe o código da categoria!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Informe o código da marca</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -81,14 +81,14 @@ export default function FormCadCategorias(props) {
                             >
                                 <Form.Control
                                     type="text"
-                                    placeholder="Informe a descrição da categoria"
-                                    id="descricao"
+                                    placeholder="Informe a descrição da marca"
+                                    id="mar_descricao"
                                     name="descricao"
                                     onChange={manipularMudanca}
-                                    value={categoria.descricao}
+                                    value={marca.mar_descricao}
                                     required />
                             </FloatingLabel>
-                            <Form.Control.Feedback type="invalid">Informe a descrição da categoria!</Form.Control.Feedback>
+                            <Form.Control.Feedback type="invalid">Informe a descrição da marca!</Form.Control.Feedback>
                         </Form.Group>
                     </Col>
                 </Row>

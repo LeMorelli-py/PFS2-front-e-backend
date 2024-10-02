@@ -86,7 +86,7 @@ export default class PedidoDAO {
                     const itemPedido = new ItemPedido(console, registro.quantidade, registro.preco_unitario, registro.subtotal);
                     listaItensPedido.push(itemPedido);
                 }
-                const pedido = new Pedido(registros[0].codigo, cliente, registros[0].data_pedido, registros[0].total, listaItensPedido);
+                const pedido = new Pedido(registros[0].codigo, registros[0].cliente.codigo, registros[0].data_pedido, registros[0].total, listaItensPedido);
                 listaPedidos.push(pedido);
             }
         } catch (erro) {

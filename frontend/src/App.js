@@ -1,5 +1,5 @@
-import TelaCadastroProduto from "./componentes/Telas/TelaCadastroProduto";
-import TelaCadastroCategoria from "./componentes/Telas/TelaCadastroCategoria";
+import TelaCadastroMarca from "./componentes/Telas/TelaCadastroMarca";
+import TelaCadastroConsole from "./componentes/Telas/TelaCadastroConsole";
 import TelaMenu from "./componentes/Telas/TelaMenu";
 import Tela404 from "./componentes/Telas/Tela404";
 import TelaLogin from "./componentes/Telas/TelaLogin";
@@ -13,7 +13,7 @@ function App() {
   
   const [usuarioLogado, setUsuarioLogado] = useState({
     nome: "",
-    logado: false,
+    logado: true,
     token: ""
   });
 
@@ -26,8 +26,8 @@ function App() {
       <ContextoUsuarioLogado.Provider value={{ usuarioLogado, setUsuarioLogado }}>
         <BrowserRouter>
           <Routes>
-            <Route path="/produto" element={<TelaCadastroProduto />} />
-            <Route path="/categoria" element={<TelaCadastroCategoria />} />
+            <Route path="/console" element={<TelaCadastroConsole />} />
+            <Route path="/marca" element={<TelaCadastroMarca />} />
             <Route path="/pedido" element={<TelaVenda />} />
             <Route path="/" element={<TelaMenu />} />
             <Route path="*" element={<Tela404 />} />

@@ -1,4 +1,4 @@
-const urlBase = "http://localhost:3000/console";
+const urlBase = "http://localhost:4000/console";
 
 export async function gravar(console, token) {
     const resposta = await fetch(urlBase,
@@ -14,7 +14,7 @@ export async function gravar(console, token) {
     return await resposta.json();
 }
 
-export async function alterar(console, token) {
+export async function alterar(produto, token) {
     const resposta = await fetch(urlBase,
         {
             method: "PUT",

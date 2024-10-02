@@ -1,18 +1,3 @@
-//Esse é um componente que possui uma aparência para
-//o usuário, onde existe um espaço para o usuário 
-//informar seu termo de busca, e esse espaço está
-//cercado por duas imagens, do lado esquerdo o
-//desenho de uma lupa e do lado direito o desenho
-//de um X
-//  _0|João               |X
-//     João
-//     João Pedro
-//     João Silva
-
-//Parte 2 do desenvolvimento da barra de busca consiste em
-//permitir que um item seja selecionado - ok
-//estilizar a barra de busca
-//permitir que esse componente também seja validado pelo formulário em que ele está contido
 
 import { useState, useRef } from 'react';
 import { Container, Form } from 'react-bootstrap';
@@ -70,8 +55,6 @@ export default function BarraBusca({ placeHolder,
                         setTermoBusca(e.target.value.toLowerCase());
                         filtrarResultado();
                         if (!itemSelecionado) {
-                            //esse atribuito é utilizado pelo HTML5 para verificar
-                            //se os elementos do formulário estão válidos ou não
                             e.target.setAttribute('aria-invalid', true);
                             e.target.setCustomValidity('erro');
                         }

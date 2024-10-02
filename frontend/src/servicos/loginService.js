@@ -1,4 +1,4 @@
-const urlBase = "http://localhost:3000/autenticacao";
+const urlBase = "http://localhost:4000/autenticacao";
 
 export async function login(usuario, senha){
     const resposta = await fetch(urlBase + "/login", 
